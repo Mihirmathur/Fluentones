@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fluentones</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Bootstrap: Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Bootstrap: Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Bootstrap: Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="container">
+
+		<section class="main">
+			<center>
+				<div class="input-group">
+					<input id="str" type="text" class="form-control" placeholder="Enter Text" aria-describedby="basic-addon1">
+				</div>
+			</center>
+		</section>
+		<center>
+			<section class="output">
+
+			</section>
+		</center>
+	</div>
+
+</body>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		function decToHex(d){
+          return (this.hex.charAt((d - d % 16)/16) + this.hex.charAt(d % 16));
+     	}
+     	function toDec(ch){
+          var p = this.chars.indexOf(ch);
+          return (p <= -1) ? 0 : (p + 32);
+     	}
+
+		$("#str").keyup(function() {
+			var value = $( this ).val();
+			//value=value.toUpperCase();
+			var hexstr='';
+			for (var i = 0; i <= value.length - 1; i++) {
+				hexstr+= (value.charCodeAt(i)).toString(16);
+			};
+			$(".output").text( hexstr );
+			for (var i = 0; i<= hexstr.length - 1; i++) {
+				
+			};
+		})
+		.keyup();		
+	});
+</script>
+</html>
