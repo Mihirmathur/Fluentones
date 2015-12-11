@@ -21,8 +21,15 @@
 		<section class="main">
 			<center>
 				<div class="input-group">
-					<input id="str" type="text" class="form-control" placeholder="Enter Text" aria-describedby="basic-addon1">
-					<br><br><button type="button" id = "generate" class="btn btn-primary">Generate Tones</button>
+					<div id="container">
+					<center>
+						<div id="input"></div>
+						<center>
+						<input id="hiddenInput" type="text" class="form-control" placeholder="Enter Text" aria-describedby="basic-addon1">
+						</center>
+					</center>
+					</div>
+					<br><br><button type="button" id = "generate" class="btn btn-primary">Generate Coded Tones</button>
 				</div>
 			</center>
 		</section>
@@ -35,11 +42,10 @@
 
 </body>
 <script type="text/javascript">
-
 	$(document).ready(function(){
 		$('#generate').click(function(){
 			$('.colbox').remove();
-			var value = $( "#str" ).val();
+			var value = $( "#hiddenInput" ).val();
 			//value=value.toUpperCase();
 			var hexstr='';
 			var hexcode;
@@ -53,15 +59,120 @@
 				hexcode = hexstr.substring(0,6);
 
 				if (hexcode.length==6) {
-					console.log(hexcode + " " + i);
-				$('.color').append("<div class = 'colbox' style= 'background-color:#" + hexcode + ";'></div>");
-				hexcode = '' ;
+					console.log(hexcode);
+					$('.color').append("<div class = 'colbox' style= 'background-color:#" + hexcode + ";'></div>");
+					hexcode = '' ;
 				};
 				hexstr = hexstr.substring(6);
 			};
 		//}).keyup();	
-		});
-			
 	});
+/*
+Fancy Input Field
+A PEN BY bartekd 
+http://codepen.io/bartekd/pen/LtaBl 
+*/
+var input;
+var cursor;
+var hiddenInput;
+var content = [];
+var lastContent = "", targetContent = "";
+var inputLock = false;
+var autoWriteTimer;
+
+var isMobile, isIE;
+
+window.onload = function() {
+
+	isMobile = navigator && navigator.platform && navigator.platform.match(/^(iPad|iPod|iPhone)$/);
+
+	isIE = (navigator.appName == 'Microsoft Internet Explorer');
+
+	input = document.getElementById('input');
+
+	hiddenInput = document.getElementById('hiddenInput');
+	hiddenInput.focus();
+
+	cursor = document.createElement('cursor');
+	cursor.setAttribute('class', 'blink');
+	cursor.innerHTML = "|";
+
+	if (!isMobile && !isIE) input.appendChild(cursor);
+
+	function refresh() {
+		inputLock = true;
+		if (targetContent.length - lastContent.length == 0) return;
+		var v = targetContent.substring(0, lastContent.length + 1);
+		content = [];
+		var blinkPadding = false;
+		for (var i = 0; i < v.length; i++) {
+			var l = v.charAt(i);
+			var d = document.createElement('div');
+			d.setAttribute('class', 'letterContainer');
+			var d2 = document.createElement('div');
+			var animClass = (i % 2 == 0) ? 'letterAnimTop' : 'letterAnimBottom';
+			var letterClass = (lastContent.charAt(i) == l) ? 'letterStatic' : animClass;
+			if (letterClass != 'letterStatic') blinkPadding = true;
+			d2.setAttribute('class', letterClass);
+			d.appendChild(d2);
+			d2.innerHTML = l;
+			content.push(d);
+		}
+
+		input.innerHTML = '';
+		for (var i = 0; i < content.length; i++) {
+			input.appendChild(content[i]);
+		}
+
+		cursor.style.paddingLeft = (blinkPadding) ? '22px' : '0';
+
+		if (!isMobile && !isIE) input.appendChild(cursor);
+
+		if (targetContent.length - lastContent.length > 1) setTimeout(refresh, 150);
+		else inputLock = false;
+
+		lastContent = v;
+	}
+
+	if (document.addEventListener) {
+
+		document.addEventListener('touchstart', function(e) {
+			clearInterval(autoWriteTimer);
+			targetContent = lastContent;
+		}, false);
+
+		document.addEventListener('click', function(e) {
+			clearInterval(autoWriteTimer);
+			targetContent = lastContent;
+			hiddenInput.focus();
+		}, false);
+
+		if (!isIE) {
+            // Input event is buggy on IE, so don't bother
+            // (http://msdn.microsoft.com/en-us/library/gg592978(v=vs.85).aspx#feedback)
+            // We will use a timer instead (below)
+            hiddenInput.addEventListener('input', function(e) {
+            	e.preventDefault();
+            	targetContent = hiddenInput.value;
+            	if (!inputLock) refresh();
+
+            }, false);
+        } else {
+        	setInterval(function() {
+        		targetContent = hiddenInput.value;
+
+        		if (targetContent != lastContent && !inputLock) refresh();
+        	}, 100);
+        }
+
+    }
+    hiddenInput.value = "";
+    autoWriteTimer = setTimeout(function() {
+    	if (lastContent != "") return;
+    	targetContent = "Type message...";
+    	refresh();
+    }, 2000);
+}
+});
 </script>
 </html>
