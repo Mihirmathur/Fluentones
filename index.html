@@ -22,7 +22,7 @@
 			<center>
 				<div class="input-group">
 					<input id="str" type="text" class="form-control" placeholder="Enter Text" aria-describedby="basic-addon1">
-					<button type="button" id = "generate" class="btn btn-primary">Generate Color</button>
+					<br><br><button type="button" id = "generate" class="btn btn-primary">Generate Tones</button>
 				</div>
 			</center>
 		</section>
@@ -38,24 +38,28 @@
 
 	$(document).ready(function(){
 		$('#generate').click(function(){
-			$("#str").keyup(function() {
-			var value = $( this ).val();
+			$('.colbox').remove();
+			var value = $( "#str" ).val();
 			//value=value.toUpperCase();
 			var hexstr='';
 			var hexcode;
 			for (var i = 0; i <= value.length - 1; i++) {
 				hexstr+= (value.charCodeAt(i)).toString(16);
 			};
-			$(".output").text( hexstr );
-			for (var i = 0; i<= hexstr.length - 1; i=i+6) {
-				hexcode = hexstr.substring(i,6);
+			$(".output").text(hexstr);
+			var i;
+			while(hexstr.length >=6){
+				console.log(hexstr.length);
+				hexcode = hexstr.substring(0,6);
+
 				if (hexcode.length==6) {
+					console.log(hexcode + " " + i);
 				$('.color').append("<div class = 'colbox' style= 'background-color:#" + hexcode + ";'></div>");
-				hexcode = '';
+				hexcode = '' ;
 				};
+				hexstr = hexstr.substring(6);
 			};
-		})
-			.keyup();	
+		//}).keyup();	
 		});
 			
 	});
