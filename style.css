@@ -5,3 +5,9 @@
 .output{
 	margin-top: 50px;
 }
+
+.colbox{
+	height: 100px;
+	width: 100px;
+	float: left;
+}
