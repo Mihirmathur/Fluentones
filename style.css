@@ -6,9 +6,23 @@
 	margin-top: 50px;
 }
 
+.color{
+	display: inline-block;
+}
+
 .colbox{
 	height: 100px;
 	width: 100px;
+	
+	display: inline-block;
+}
+
+#genimg{
+	display: none;
+	
+}
+
+#generated_img{
 	display: inline-block;
 }
 
